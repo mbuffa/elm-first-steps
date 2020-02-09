@@ -3,7 +3,10 @@
 -- Read how it works:
 --   https://guide.elm-lang.org/effects/random.html
 --
+
+
 module Dice exposing (..)
+
 import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
@@ -17,12 +20,12 @@ import Svg.Attributes exposing (..)
 
 
 main =
-  Browser.element
-    { init = init
-    , update = update
-    , subscriptions = subscriptions
-    , view = view
-    }
+    Browser.element
+        { init = init
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }
 
 
 
@@ -30,15 +33,15 @@ main =
 
 
 type alias Model =
-  { dieFace : Int
-  }
+    { dieFace : Int
+    }
 
 
-init : () -> (Model, Cmd Msg)
+init : () -> ( Model, Cmd Msg )
 init _ =
-  ( Model 1
-  , Cmd.none
-  )
+    ( Model 1
+    , Cmd.none
+    )
 
 
 
@@ -46,22 +49,22 @@ init _ =
 
 
 type Msg
-  = Roll
-  | NewFace Int
+    = Roll
+    | NewFace Int
 
 
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case msg of
-    Roll ->
-      ( model
-      , Random.generate NewFace (Random.int 1 6)
-      )
+    case msg of
+        Roll ->
+            ( model
+            , Random.generate NewFace (Random.int 1 6)
+            )
 
-    NewFace newFace ->
-      ( Model newFace
-      , Cmd.none
-      )
+        NewFace newFace ->
+            ( Model newFace
+            , Cmd.none
+            )
 
 
 
@@ -70,7 +73,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.none
+    Sub.none
 
 
 
@@ -79,18 +82,20 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-  div []
-      [ button [ onClick Roll ] [ Html.text "Roll" ]
-      , svg [ width "120"
+    div []
+        [ button [ onClick Roll ] [ Html.text "Roll" ]
+        , svg
+            [ width "120"
             , height "120"
             , viewBox "0 0 120 120"
             ]
-            (List.concat [dieRectView, dieFaceView model.dieFace])
-      ]
+            (List.concat [ dieRectView, dieFaceView model.dieFace ])
+        ]
 
-dieRectView : List(Svg Msg)
+
+dieRectView : List (Svg Msg)
 dieRectView =
-  [ rect
+    [ rect
         [ x "10"
         , y "10"
         , width "100"
@@ -102,50 +107,58 @@ dieRectView =
         , stroke "black"
         ]
         []
-  ]
+    ]
 
-dieFaceView : number -> List(Svg Msg)
+
+dieFaceView : number -> List (Svg Msg)
 dieFaceView number =
-  if number == 1 then
-    [drawDot 60 60]
-  else if number == 2 then
-    [ drawDot 30 30
-    , drawDot 90 90
-    ]
-  else if number == 3 then
-    [ drawDot 30 30
-    , drawDot 90 90
-    , drawDot 60 60
-    ]
-  else if number == 4 then
-    [ drawDot 30 30
-    , drawDot 90 90
-    , drawDot 30 90
-    , drawDot 90 30
-    ]
-  else if number == 5 then
-    [ drawDot 30 30
-    , drawDot 90 90
-    , drawDot 30 90
-    , drawDot 90 30
-    , drawDot 60 60
-    ]
-  else if number == 6 then
-    [ drawDot 30 30
-    , drawDot 90 90
-    , drawDot 30 90
-    , drawDot 90 30
-    , drawDot 60 90
-    , drawDot 60 30
-    ]
-  else
-   []
+    if number == 1 then
+        [ drawDot 60 60 ]
+
+    else if number == 2 then
+        [ drawDot 30 30
+        , drawDot 90 90
+        ]
+
+    else if number == 3 then
+        [ drawDot 30 30
+        , drawDot 90 90
+        , drawDot 60 60
+        ]
+
+    else if number == 4 then
+        [ drawDot 30 30
+        , drawDot 90 90
+        , drawDot 30 90
+        , drawDot 90 30
+        ]
+
+    else if number == 5 then
+        [ drawDot 30 30
+        , drawDot 90 90
+        , drawDot 30 90
+        , drawDot 90 30
+        , drawDot 60 60
+        ]
+
+    else if number == 6 then
+        [ drawDot 30 30
+        , drawDot 90 90
+        , drawDot 30 90
+        , drawDot 90 30
+        , drawDot 60 90
+        , drawDot 60 30
+        ]
+
+    else
+        []
+
 
 drawDot : Int -> Int -> Svg Msg
 drawDot x y =
-  circle
-    [ cx (String.fromInt x)
-    , cy (String.fromInt y)
-    , r "5"
-    ]
-    []
+    circle
+        [ cx (String.fromInt x)
+        , cy (String.fromInt y)
+        , r "5"
+        ]
+        []
