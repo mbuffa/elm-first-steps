@@ -7,6 +7,8 @@
 --   https://elm-lang.org/examples/clock
 --
 
+module Clock exposing (..)
+
 import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
@@ -71,7 +73,7 @@ update msg model =
       ( { model | zone = newZone }
       , Cmd.none
       )
-      
+
     PauseResume ->
       ( { model | ticking = not model.ticking }
       , Cmd.none
@@ -84,7 +86,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Time.every 1000 Tick  
+  Time.every 1000 Tick
 
 -- VIEW
 
