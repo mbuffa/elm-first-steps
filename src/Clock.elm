@@ -7,15 +7,16 @@
 --   https://elm-lang.org/examples/clock
 --
 
+
 module Clock exposing (..)
 
 import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
-import Task
-import Time
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import Task
+import Time
 
 
 
@@ -23,12 +24,12 @@ import Svg.Attributes exposing (..)
 
 
 main =
-  Browser.element
-    { init = init
-    , view = view
-    , update = update
-    , subscriptions = subscriptions
-    }
+    Browser.element
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }
 
 
 
@@ -36,17 +37,17 @@ main =
 
 
 type alias Model =
-  { zone : Time.Zone
-  , time : Time.Posix
-  , ticking : Bool
-  }
+    { zone : Time.Zone
+    , time : Time.Posix
+    , ticking : Bool
+    }
 
 
-init : () -> (Model, Cmd Msg)
+init : () -> ( Model, Cmd Msg )
 init _ =
-  ( Model Time.utc (Time.millisToPosix 0) True
-  , Task.perform AdjustTimeZone Time.here
-  )
+    ( Model Time.utc (Time.millisToPosix 0) True
+    , Task.perform AdjustTimeZone Time.here
+    )
 
 
 
@@ -54,32 +55,32 @@ init _ =
 
 
 type Msg
-  = Tick Time.Posix
-  | AdjustTimeZone Time.Zone
-  | PauseResume
+    = Tick Time.Posix
+    | AdjustTimeZone Time.Zone
+    | PauseResume
 
 
-
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case msg of
-    Tick newTime ->
-      if model.ticking then
-        ( { model | time = newTime }
-        , Cmd.none
-        )
-      else
-        ( model, Cmd.none )
+    case msg of
+        Tick newTime ->
+            if model.ticking then
+                ( { model | time = newTime }
+                , Cmd.none
+                )
 
-    AdjustTimeZone newZone ->
-      ( { model | zone = newZone }
-      , Cmd.none
-      )
+            else
+                ( model, Cmd.none )
 
-    PauseResume ->
-      ( { model | ticking = not model.ticking }
-      , Cmd.none
-      )
+        AdjustTimeZone newZone ->
+            ( { model | zone = newZone }
+            , Cmd.none
+            )
+
+        PauseResume ->
+            ( { model | ticking = not model.ticking }
+            , Cmd.none
+            )
 
 
 
@@ -88,26 +89,35 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Time.every 1000 Tick
+    Time.every 1000 Tick
+
+
 
 -- VIEW
 
 
 view : Model -> Html Msg
 view model =
-  let
-    hour   = Time.toHour   model.zone model.time
-    minute = Time.toMinute model.zone model.time
-    second = Time.toSecond model.zone model.time
-  in
-  div []
-      [ svg [ width "120"
+    let
+        hour =
+            Time.toHour model.zone model.time
+
+        minute =
+            Time.toMinute model.zone model.time
+
+        second =
+            Time.toSecond model.zone model.time
+    in
+    div []
+        [ svg
+            [ width "120"
             , height "120"
             , viewBox "0 0 120 120"
             ]
             (List.concat [ alarmView, hourView hour, minuteView minute, secondView second ])
-      , button [ onClick PauseResume ] [ Html.text "Pause/Resume" ]
-      ]
+        , button [ onClick PauseResume ] [ Html.text "Pause/Resume" ]
+        ]
+
 
 alarmView : List (Svg Msg)
 alarmView =
@@ -125,10 +135,12 @@ alarmView =
         []
     ]
 
+
 hourView : Int -> List (Svg Msg)
 hourView hour =
     let
-        angle = String.fromInt(hour * 6 - 180)
+        angle =
+            String.fromInt (hour * 6 - 180)
     in
     [ rect
         [ x "59"
@@ -141,10 +153,12 @@ hourView hour =
         []
     ]
 
+
 minuteView : Int -> List (Svg Msg)
 minuteView minute =
     let
-        angle = String.fromInt(minute * 6 - 180)
+        angle =
+            String.fromInt (minute * 6 - 180)
     in
     [ rect
         [ x "59"
@@ -157,10 +171,12 @@ minuteView minute =
         []
     ]
 
+
 secondView : Int -> List (Svg Msg)
 secondView second =
     let
-        angle = String.fromInt(second * 6 - 180)
+        angle =
+            String.fromInt (second * 6 - 180)
     in
     [ rect
         [ x "59"
