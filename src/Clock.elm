@@ -14,6 +14,8 @@ import Html exposing (..)
 import Html.Events exposing (..)
 import Task
 import Time
+import Svg exposing (..)
+import Svg.Attributes exposing (..)
 
 
 
@@ -94,11 +96,79 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
   let
-    hour   = String.fromInt (Time.toHour   model.zone model.time)
-    minute = String.fromInt (Time.toMinute model.zone model.time)
-    second = String.fromInt (Time.toSecond model.zone model.time)
+    hour   = Time.toHour   model.zone model.time
+    minute = Time.toMinute model.zone model.time
+    second = Time.toSecond model.zone model.time
   in
   div []
-  [ h1 [] [ text (hour ++ ":" ++ minute ++ ":" ++ second) ]
-  , button [ onClick PauseResume ] [ text "Pause/Resume" ]
-  ]
+      [ svg [ width "120"
+            , height "120"
+            , viewBox "0 0 120 120"
+            ]
+            (List.concat [ alarmView, hourView hour, minuteView minute, secondView second ])
+      , button [ onClick PauseResume ] [ Html.text "Pause/Resume" ]
+      ]
+
+alarmView : List (Svg Msg)
+alarmView =
+    [ rect
+        [ x "10"
+        , y "10"
+        , width "100"
+        , height "100"
+        , rx "15"
+        , ry "15"
+        , fill "white"
+        , strokeWidth "3px"
+        , stroke "black"
+        ]
+        []
+    ]
+
+hourView : Int -> List (Svg Msg)
+hourView hour =
+    let
+        angle = String.fromInt(hour * 6 - 180)
+    in
+    [ rect
+        [ x "59"
+        , y "59"
+        , width "2"
+        , height "40"
+        , fill "black"
+        , transform ("rotate(" ++ angle ++ " 59 59)")
+        ]
+        []
+    ]
+
+minuteView : Int -> List (Svg Msg)
+minuteView minute =
+    let
+        angle = String.fromInt(minute * 6 - 180)
+    in
+    [ rect
+        [ x "59"
+        , y "59"
+        , width "2"
+        , height "36"
+        , fill "grey"
+        , transform ("rotate(" ++ angle ++ " 59 59)")
+        ]
+        []
+    ]
+
+secondView : Int -> List (Svg Msg)
+secondView second =
+    let
+        angle = String.fromInt(second * 6 - 180)
+    in
+    [ rect
+        [ x "59"
+        , y "59"
+        , width "2"
+        , height "10"
+        , fill "red"
+        , transform ("rotate(" ++ angle ++ " 59 59)")
+        ]
+        []
+    ]
