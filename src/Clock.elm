@@ -177,9 +177,9 @@ secondView second =
     in
     [ rect
         [ x "59"
-        , y "59"
+        , y "49"
         , width "2"
-        , height "40"
+        , height "50"
         , fill "red"
         , transform ("rotate(" ++ angle ++ " 59 59)")
         ]
