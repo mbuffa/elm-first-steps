@@ -121,13 +121,10 @@ view model =
 
 alarmView : List (Svg Msg)
 alarmView =
-    [ rect
-        [ x "10"
-        , y "10"
-        , width "100"
-        , height "100"
-        , rx "15"
-        , ry "15"
+    [ circle
+        [ cx "59"
+        , cy "59"
+        , r "50"
         , fill "white"
         , strokeWidth "3px"
         , stroke "black"
@@ -140,14 +137,14 @@ hourView : Int -> List (Svg Msg)
 hourView hour =
     let
         angle =
-            String.fromInt (hour * 6 - 180)
+            String.fromInt (hour * 30 - 180)
     in
     [ rect
         [ x "59"
         , y "59"
         , width "2"
-        , height "40"
-        , fill "black"
+        , height "10"
+        , fill "grey"
         , transform ("rotate(" ++ angle ++ " 59 59)")
         ]
         []
@@ -164,8 +161,8 @@ minuteView minute =
         [ x "59"
         , y "59"
         , width "2"
-        , height "36"
-        , fill "grey"
+        , height "30"
+        , fill "black"
         , transform ("rotate(" ++ angle ++ " 59 59)")
         ]
         []
@@ -182,7 +179,7 @@ secondView second =
         [ x "59"
         , y "59"
         , width "2"
-        , height "10"
+        , height "40"
         , fill "red"
         , transform ("rotate(" ++ angle ++ " 59 59)")
         ]
